@@ -89,13 +89,13 @@
 <script>
 import Vue from 'vue'
 import { mapState } from 'vuex'
-import pdfvuer from 'pdfvuer'
+import Pdf from './Pdfvuer'
 import * as jobService from '@/service/JobService'
 
 export default Vue.extend({
   name: 'MosaicView',
   components: {
-    pdf: pdfvuer
+    Pdf
   },
   data () {
     return {
