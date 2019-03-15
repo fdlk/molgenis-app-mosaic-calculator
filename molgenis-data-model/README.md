@@ -1,18 +1,18 @@
-# Mosaic app data model
-
-- Upload the data model emx file using the 'Advanced data import' plugin, commander or API.
-- Use the molgenis permission manager to mark the 'exp_data' entity as row level secured.
-(This work around is needed as row level security is not part of emx at the moment)
-- Use the 'Meta data manager' plugin to mark the 'exp_data' entity file attributes (event data, snp BAF data) as 'Cascade delete'.
- (This work around is needed as 'cascade delete' is not part of emx at the moment)
-- Use the scripts plugin, commander or api to import/create the analysis scripts found in the scrips folder. 
-    - The molgenis_mosaic.R file should be stored with the following settings
-        - Name: molgenis_mosaic
-        - Type: R
-        - Content: molgenis_mosaic.R file content
-            -  Replace the `mol.url` variable with the molgenis server uri (for example: 'https://molgenis.org')
-        - Generate security token; yes
-        - Result file extension: pdf
-        - Parameters: id 
-- Setup a cleanup job using the 'Scheduled jobs' plugin to clear the data at a set interval (nightly).
-    -  Replace the `mol.url` variable with the molgenis server uri (for example: 'https://molgenis.org')
+# Server initialisation instructions
+```mcmd
+add group mosaic
+give MOSAIC_VIEWER write sys_FileMeta
+give MOSAIC_VIEWER write sys_job_ScriptJobExecution
+give MOSAIC_VIEWER read sys_scr_Script
+give MOSAIC_VIEWER read sys_App
+import --from-path ~/git/molgenis-app-mosaic-calculator/molgenis-data-model/mosaic_model.xlsx
+import --from-path ~/git/molgenis-app-mosaic-calculator/molgenis-data-model/mosaic_scripts.xlsx
+enable rls mosaic_exp_data
+give MOSAIC_VIEWER write mosaic_exp_data
+# upload mosaic-app zipfile and put it in the menu
+give MOSAIC_VIEWER view app-molgenis-app-mosaic-calculator
+# Make both file attributes cascade delete in exp_data
+add user demo
+# Make role USER extend MOSAIC_VIEWER
+# If mail works: enable user signup and disable moderation
+```
